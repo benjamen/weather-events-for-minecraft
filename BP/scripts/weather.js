@@ -114,6 +114,9 @@ function tick() {
   announce();
 }
 
+// The channels right now, for other parts of the pack (puddles read the rain, sun and wind from here).
+export const currentLevels = () => state.levels;
+
 export function startWeather() {
   startFogMixer({ packId: PACK_ID, log });
   system.runInterval(tick, 10);

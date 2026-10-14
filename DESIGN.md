@@ -16,14 +16,19 @@ Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a s
   shared fog mixer for the haze of each kind of weather, and pushes players in strong wind. Announces
   `wx:changed` so other packs and games can react.
 
+- `puddle-blocks.js` + the `wx:puddle` block (Minecraft glue and assets): a custom block with a `wx:size` state of 1 to 4
+  sixteenths deep (a quarter block at most), a translucent water-blob texture and one thin-slab model per depth. In
+  rain, puddles form on open ground near each player, grow to the rain's limit, then shrink and dry, faster in sun and
+  wind. Walking through one splashes. The list is saved in a world property so a restart never strands puddles.
+  `scripts/gen-puddle.mjs` generates the block, models and texture from `MAX_SIZE`, so the art and the rules agree.
+  `/scriptevent wx:puddles` counts them and `/scriptevent wx:dry` clears them all.
+
 ## Honest limits
 - Vanilla rain is only on or off. Light rain is faked with fog and (later) particles.
 - Vanilla trees cannot bend. The plan is leaf and dust streams, plus animated flags, windsocks and banners.
 - Sun brightness is a glare overlay and haze, not real brightness.
 
 ## Not built yet
-- Puddle blocks (custom block 1 to 4 sixteenths deep, translucent water look) and the placement loop that uses
-  `puddles.js`.
 - Rain, snow and hail particles; the wind howl and leaf streams; thunder and lightning timing.
 - Hail stones (a custom falling entity, built on the kit's projectiles); snow layers that pile up and melt.
 - Sun glare overlay, sunburn, sun goggles and hat items.
@@ -32,6 +37,11 @@ Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a s
   sets it for the world.
 
 ## To check first in a running game
+- **The puddle block first:** `/scriptevent wx:set rain 3`, wait, and look at the ground. If puddles do not appear, check
+  the content log for the block failing to load. The block file uses format version 1.21.80 with a collision box
+  half a block tall at most; if the game rejects the box or the permutations, that is the file to fix. Puddles should
+  look like thin round water patches, you should walk over them without stepping up, and they should dry after
+  `wx:set rain 0` (try `wx:set sun 3` to see it faster).
 Install both packs in a world with cheats on, then:
 - `/scriptevent wx:set rain 2 wind 3`: rain should start within about 20 seconds, fog should close in a little, and
   you should be shoved downwind when you stand in the open. Crouch to brace; stand under a roof to be left alone.

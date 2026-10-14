@@ -4,11 +4,11 @@ import { resolve } from "./channels.js";
 
 // Spell templates. `after` lists which spells can follow, with weights, so a blizzard does not turn into a heatwave.
 export const FRONTS = {
-  still: { levels: { sun: 1 }, minutes: [2, 5], after: { breezy: 3, bright: 3, overcast: 2, still: 1 } },
+  still: { levels: { sun: 1 }, minutes: [2, 5], after: { breezy: 3, bright: 3, overcast: 2, still: 1, mist: 1 } },
   breezy: { levels: { wind: 1, sun: 2 }, minutes: [2, 5], after: { bright: 3, still: 2, overcast: 2, windy: 1 } },
   bright: { levels: { sun: 2 }, minutes: [3, 6], after: { scorcher: 2, breezy: 3, overcast: 2, still: 1 } },
   scorcher: { levels: { sun: 3 }, minutes: [2, 4], after: { bright: 3, breezy: 2, overcast: 1 } },
-  overcast: { levels: {}, minutes: [1, 3], after: { drizzle: 4, snowing: 1, windy: 2, still: 2 } },
+  overcast: { levels: {}, minutes: [1, 3], after: { drizzle: 4, snowing: 1, windy: 2, still: 2, mist: 1 } },
   windy: { levels: { wind: 2 }, minutes: [2, 4], after: { gale: 1, rain: 2, breezy: 3, overcast: 1 } },
   gale: { levels: { wind: 3 }, minutes: [1, 3], after: { storm: 2, windy: 3, breezy: 1 } },
   drizzle: { levels: { rain: 1 }, minutes: [2, 5], after: { rain: 3, still: 2, bright: 1, overcast: 1 } },
@@ -17,6 +17,9 @@ export const FRONTS = {
   storm: { levels: { rain: 3, wind: 3, hail: 1 }, minutes: [2, 4], after: { downpour: 3, rain: 2, hail: 1 } },
   hail: { levels: { rain: 1, hail: 2 }, minutes: [1, 2], after: { rain: 3, drizzle: 2, storm: 1 } },
   snowing: { levels: { snow: 2 }, minutes: [3, 6], after: { blizzard: 2, flurries: 3, still: 1 } },
+  mist: { levels: { mist: 1 }, minutes: [2, 4], after: { fog: 2, still: 2, bright: 2, drizzle: 1 } },
+  fog: { levels: { mist: 2 }, minutes: [2, 4], after: { mist: 3, thickfog: 1, drizzle: 1, still: 1 } },
+  thickfog: { levels: { mist: 3 }, minutes: [1, 3], after: { fog: 3, mist: 1 } },
   flurries: { levels: { snow: 1 }, minutes: [2, 4], after: { snowing: 3, still: 2, bright: 1 } },
   blizzard: { levels: { snow: 3, wind: 3 }, minutes: [2, 4], after: { snowing: 3, flurries: 2 } },
 };

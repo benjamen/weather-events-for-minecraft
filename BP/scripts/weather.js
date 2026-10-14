@@ -62,6 +62,7 @@ const HAZE = {
   rain: { table: [200, 90, 48, 24], tint: "grey" },
   snow: { table: [200, 70, 30, 9], tint: "snow" },
   hail: { table: [200, 80, 40, 20], tint: "grey" },
+  mist: { table: [200, 70, 28, 9], tint: "mist" },
 };
 function applyFog() {
   for (const [channel, { table, tint }] of Object.entries(HAZE)) {

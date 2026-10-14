@@ -1,6 +1,6 @@
 # Weather Events: design
 
-Five channels, each a level from 0 to 3 (none, light, medium, heavy), that combine: rain, wind, hail, snow and sun.
+Six channels, each a level from 0 to 3 (none, light, medium, heavy), that combine: rain, wind, hail, snow, sun and mist.
 Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a scorcher.
 
 ## What is built
@@ -38,6 +38,8 @@ Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a s
 - `barometer.js` / `barometer-item.js`: a craftable `wx:barometer` (copper and redstone). Use it to see the weather, what is next and
   when, and whether pressure is rising or falling.
 - `wx:flake` falling-snow particles (`flakes` in `wind-streams.js`), carried by the wind, thicker in heavier snow.
+- `mist` channel: haze through the fog mixer (visibility about 70, 28 or 9 blocks), only in still air, burnt off by a strong sun,
+  gone in hail, and thick mist hides the sun. `/scriptevent wx:set mist 3` or `wx:front fog`.
 
 ## Honest limits
 - Vanilla rain is only on or off. Light rain is faked with fog and (later) particles.
@@ -49,7 +51,7 @@ Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a s
 ## Not built yet
 - Hail particles (rain uses the base game's).
 - Sun goggles and hat items (a helmet of any kind stands in for now). A true screen glare overlay (heat haze is fog).
-- Fog and mist as their own channel. Wetness, mud, rainbows.
+ Wetness, mud, rainbows.
 - Biome temperature: the Script API cannot read a biome's climate easily, so for now `wx:climate cold|temperate|hot`
   sets it for the world.
 

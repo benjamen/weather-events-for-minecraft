@@ -1,9 +1,9 @@
-// Weather Events: the five weather channels (rain, wind, hail, snow, sun), each a float on the kit's 0 to 3 scale, and
+// Weather Events: the six weather channels (rain, wind, hail, snow, sun, mist), each a float on the kit's 0 to 3 scale, and
 // the rules for which combinations make sense. Pure: no Minecraft imports; tested in tests/channels.test.js.
 import { clamp } from "./kit/intensity.js";
 
-export const CHANNELS = ["rain", "wind", "hail", "snow", "sun"];
-export const CLEAR = Object.freeze({ rain: 0, wind: 0, hail: 0, snow: 0, sun: 0 });
+export const CHANNELS = ["rain", "wind", "hail", "snow", "sun", "mist"];
+export const CLEAR = Object.freeze({ rain: 0, wind: 0, hail: 0, snow: 0, sun: 0, mist: 0 });
 
 // Temperature as the base game rates biomes: below about 0.15 it snows instead of raining, above about 0.95 it is hot.
 export const COLD = 0.15;
@@ -31,6 +31,10 @@ export function resolve(asked, { temperature = 0.5 } = {}) {
   const biomeCap = temperature <= COLD ? 2 : 3;
   out.sun = Math.min(out.sun, skyCap, biomeCap);
   if (temperature >= HOT && wet === 0 && out.sun > 0) out.sun = Math.min(3, out.sun + 1);
+  // Mist needs still air and no hail; a strong sun burns it off; thick mist hides the sun.
+  out.mist = Math.min(out.mist, out.wind >= 3 ? 0 : out.wind >= 2 ? 1 : 3);
+  if (out.hail > 0 || out.sun >= 2.5) out.mist = 0;
+  out.sun = Math.min(out.sun, [3, 2, 1, 0][Math.min(3, Math.floor(out.mist + 1e-9))]);
   return out;
 }
 
@@ -49,6 +53,9 @@ export function describeWeather(levels) {
   if (l.snow === 3) return "heavy snow";
   if (l.snow === 2) return "snow";
   if (l.snow === 1) return "flurries";
+  if (l.mist === 3) return "dense fog";
+  if (l.mist === 2) return "fog";
+  if (l.mist === 1) return "mist";
   if (l.sun >= 3 && l.wind >= 2) return "hot dry wind";
   if (l.sun >= 3) return "blistering sun";
   if (l.wind >= 3) return "gale";

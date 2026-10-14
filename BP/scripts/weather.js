@@ -116,6 +116,7 @@ function tick() {
 
 // The channels right now, for other parts of the pack (puddles read the rain, sun and wind from here).
 export const currentLevels = () => state.levels;
+export const currentTemperature = () => climate();
 // The wind right now (direction, gust and strength; strength is 0 when the wind channel is off).
 export const currentWind = () => windAt(seconds(), seed(), state.levels.wind);
 

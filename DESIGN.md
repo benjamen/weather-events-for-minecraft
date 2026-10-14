@@ -22,6 +22,10 @@ Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a s
   wind. Walking through one splashes. The list is saved in a world property so a restart never strands puddles.
   `scripts/gen-puddle.mjs` generates the block, models and texture from `MAX_SIZE`, so the art and the rules agree.
   `/scriptevent wx:puddles` counts them and `/scriptevent wx:dry` clears them all.
+- `hail.js` (pure, tested) and `hail-stones.js` (glue): stones are vanilla snowballs tagged `wx_hail`, fired from open sky above
+  each player. Level 1 pea stones are harmless and just patter on roofs (sound follows the block: wood, stone, glass,
+  metal); level 2 marbles sting; level 3 golf balls hurt and can break glass. A helmet takes most of the damage.
+  Switch off with world properties `wx:hail_damage` / `wx:hail_glass` set to `off`. Untested in a game.
 
 ## Honest limits
 - Vanilla rain is only on or off. Light rain is faked with fog and (later) particles.
@@ -30,7 +34,7 @@ Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a s
 
 ## Not built yet
 - Rain, snow and hail particles; the wind howl and leaf streams; thunder and lightning timing.
-- Hail stones (a custom falling entity, built on the kit's projectiles); snow layers that pile up and melt.
+- Snow layers that pile up and melt.
 - Sun glare overlay, sunburn, sun goggles and hat items.
 - The barometer item. Fog and mist as their own channel. Wetness, mud, rainbows.
 - Biome temperature: the Script API cannot read a biome's climate easily, so for now `wx:climate cold|temperate|hot`

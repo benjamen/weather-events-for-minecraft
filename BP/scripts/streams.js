@@ -23,3 +23,18 @@ export function countFor(perSecond, seconds, rand) {
 
 // The gap in seconds between howls (long when the wind is light, short in a gale); none below `min` strength.
 export const howlGap = (strength) => (strength < 0.55 ? Infinity : clamp(14 - strength * 8, 4, 14));
+
+// Snowflakes: where one starts for a player at `at`, within `radius` and high enough to fall a while, and how it moves (it
+// sinks slowly and the wind carries it sideways).
+export function flakeSpot(at, wind, rand, { radius = 12 } = {}) {
+  const a = rand() * Math.PI * 2, r = Math.sqrt(rand()) * radius;
+  return {
+    origin: { x: at.x + Math.cos(a) * r, y: at.y + 6 + rand() * 6, z: at.z + Math.sin(a) * r },
+    dir: { x: wind.x * wind.strength * 0.6, y: -1, z: wind.z * wind.strength * 0.6 },
+    speed: 0.5 + wind.strength * 0.8 + rand() * 0.3,
+    lifetime: 7 + rand() * 3,
+  };
+}
+
+// Flakes per second near a player at a snow level (a float on the 0 to 3 scale): a flurry up to a blizzard.
+export const flakesPerSecond = (snow) => Math.round(snow <= 0 ? 0 : snow * snow * 7 + snow * 6);

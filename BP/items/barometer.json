@@ -1,0 +1,11 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": { "identifier": "wx:barometer", "menu_category": { "category": "equipment" } },
+    "components": {
+      "minecraft:icon": "wx_barometer",
+      "minecraft:display_name": { "value": "item.wx:barometer.name" },
+      "minecraft:max_stack_size": 1
+    }
+  }
+}

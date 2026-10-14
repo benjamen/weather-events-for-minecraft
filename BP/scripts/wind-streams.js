@@ -1,7 +1,7 @@
 // Weather Events, wind on the Minecraft side: spawns the `wx:leaf` particles upwind of each player and plays the
 // howl. The rules are in streams.js and wind.js (pure, tested). Glue, not run in a game yet.
 import { MolangVariableMap, system, world } from "@minecraft/server";
-import { countFor, howlGap, leafSpot } from "./streams.js";
+import { countFor, flakeSpot, flakesPerSecond, howlGap, leafSpot } from "./streams.js";
 import { windEffects } from "./wind.js";
 
 const INTERVAL = 4;
@@ -44,4 +44,33 @@ export function startWindStreams(wind) {
   }, INTERVAL);
   world.afterEvents.playerLeave.subscribe(({ playerId }) => lastHowl.delete(playerId));
   log("wind streams ready");
+}
+
+// Falling snow: `wx:flake` particles around each player while it snows, carried sideways by the wind. `snow` returns the
+// snow channel's level, `wind` the current wind.
+export function startFlakes(snow, wind) {
+  system.runInterval(() => {
+    const level = snow();
+    const n0 = flakesPerSecond(level);
+    if (n0 <= 0) return;
+    const w = wind();
+    for (const player of world.getAllPlayers()) {
+      if (player.dimension.id !== "minecraft:overworld") continue;
+      const n = countFor(n0, 0.2, Math.random);
+      for (let i = 0; i < n; i++) {
+        const f = flakeSpot(player.location, w, Math.random);
+        const vars = new MolangVariableMap();
+        vars.setFloat("dir_x", f.dir.x);
+        vars.setFloat("dir_y", f.dir.y);
+        vars.setFloat("dir_z", f.dir.z);
+        vars.setFloat("speed", f.speed);
+        vars.setFloat("life", f.lifetime);
+        try {
+          player.dimension.spawnParticle("wx:flake", f.origin, vars);
+        } catch {
+          // unloaded
+        }
+      }
+    }
+  }, 4);
 }

@@ -35,16 +35,21 @@ Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a s
 - `snow.js` / `snow-layers.js`: snow piles base-game snow layers on open ground near players (up to 1, 3 or 6 layers by level),
   saved in a world property and melting layer by layer after the snow stops (faster in sun and warmth). `wx:melt` clears them.
   Untested in a game: check the `height` state is right for `minecraft:snow_layer`.
+- `barometer.js` / `barometer-item.js`: a craftable `wx:barometer` (copper and redstone). Use it to see the weather, what is next and
+  when, and whether pressure is rising or falling.
+- `wx:flake` falling-snow particles (`flakes` in `wind-streams.js`), carried by the wind, thicker in heavier snow.
 
 ## Honest limits
 - Vanilla rain is only on or off. Light rain is faked with fog and (later) particles.
 - Vanilla trees cannot bend. The plan is leaf and dust streams, plus animated flags, windsocks and banners.
 - Sun brightness is a glare overlay and haze, not real brightness.
+- Thunder: the base game plays it the instant lightning strikes, and a pack cannot delay or remove that, so there is no
+  distance delay between flash and thunder.
 
 ## Not built yet
-- Snow and hail particles (rain uses the base game's); thunder and lightning timing.
+- Hail particles (rain uses the base game's).
 - Sun goggles and hat items (a helmet of any kind stands in for now). A true screen glare overlay (heat haze is fog).
-- The barometer item. Fog and mist as their own channel. Wetness, mud, rainbows.
+- Fog and mist as their own channel. Wetness, mud, rainbows.
 - Biome temperature: the Script API cannot read a biome's climate easily, so for now `wx:climate cold|temperate|hot`
   sets it for the world.
 

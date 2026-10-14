@@ -1,0 +1,42 @@
+# Weather Events: design
+
+Five channels, each a level from 0 to 3 (none, light, medium, heavy), that combine: rain, wind, hail, snow and sun.
+Rain with wind is a gale; snow with wind is a blizzard; sun with a breeze is a scorcher.
+
+## What is built
+- `channels.js` (pure, tested): which combinations are possible. Hail needs a storm, snow only in the cold, blistering
+  sun means a dry sky, and the hot biomes make the sun worse. `describeWeather` names the result.
+- `forecast.js` (pure, tested): seeded "fronts" (spells of weather lasting a few minutes) that follow believable
+  sequences, with an `outlook` for a barometer item.
+- `puddles.js` (pure, tested): where puddles form, how fast, how deep (up to a quarter block), how long they last, and
+  how sun and wind dry them.
+- `wind.js` (pure, tested): a wind that drifts and gusts, the shove on a player (braced by crouching, stopped by
+  shelter, worse in the air), and the leaf and howl numbers.
+- `weather.js` (Minecraft glue): runs the forecast, eases the channels, drives vanilla rain and thunder, asks the
+  shared fog mixer for the haze of each kind of weather, and pushes players in strong wind. Announces
+  `wx:changed` so other packs and games can react.
+
+## Honest limits
+- Vanilla rain is only on or off. Light rain is faked with fog and (later) particles.
+- Vanilla trees cannot bend. The plan is leaf and dust streams, plus animated flags, windsocks and banners.
+- Sun brightness is a glare overlay and haze, not real brightness.
+
+## Not built yet
+- Puddle blocks (custom block 1 to 4 sixteenths deep, translucent water look) and the placement loop that uses
+  `puddles.js`.
+- Rain, snow and hail particles; the wind howl and leaf streams; thunder and lightning timing.
+- Hail stones (a custom falling entity, built on the kit's projectiles); snow layers that pile up and melt.
+- Sun glare overlay, sunburn, sun goggles and hat items.
+- The barometer item. Fog and mist as their own channel. Wetness, mud, rainbows.
+- Biome temperature: the Script API cannot read a biome's climate easily, so for now `wx:climate cold|temperate|hot`
+  sets it for the world.
+
+## To check first in a running game
+Install both packs in a world with cheats on, then:
+- `/scriptevent wx:set rain 2 wind 3`: rain should start within about 20 seconds, fog should close in a little, and
+  you should be shoved downwind when you stand in the open. Crouch to brace; stand under a roof to be left alone.
+- `/scriptevent wx:front storm`, `wx:front blizzard`, `wx:front scorcher`, then `wx:auto` to follow the forecast.
+- `/scriptevent wx:status` prints the weather name, the forecast and how long until the next front.
+- `/scriptevent wx:climate cold` then `wx:set rain 3`: it should snow instead.
+- Whether `applyKnockback` moves a player at these strengths, and whether the push feels like wind or like being hit.
+- Whether the shared fog mixer pushes one fog per player without flicker.

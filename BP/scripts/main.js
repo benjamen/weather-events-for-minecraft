@@ -5,6 +5,7 @@ import { startSnowLayers } from "./snow-layers.js";
 import { startSun } from "./sun-effects.js";
 import { currentLevels, currentOutlook, currentTemperature, currentWind, shownLevels, startWeather } from "./weather.js";
 import { startFlakes, startWindStreams } from "./wind-streams.js";
+import { startChill } from "./chill-effects.js";
 
 startWeather();
 startPuddles(currentLevels);
@@ -14,3 +15,4 @@ startSun(() => currentLevels().sun);
 startSnowLayers(currentLevels, currentTemperature);
 startBarometer(currentOutlook, shownLevels);
 startFlakes(() => currentLevels().snow, currentWind);
+startChill();

@@ -69,3 +69,9 @@ Install both packs in a world with cheats on, then:
 - `/scriptevent wx:climate cold` then `wx:set rain 3`: it should snow instead.
 - Whether `applyKnockback` moves a player at these strengths, and whether the push feels like wind or like being hit.
 - Whether the shared fog mixer pushes one fog per player without flicker.
+
+## The cold (chill.js, chill-effects.js)
+Out in rain, wind, mist, snow or hail, open to the sky and away from light, a player grows chilled (0 to 100); a roof
+warms them, a fire or a lamp (block light 10 or more) faster. Past 45 the view takes a frost-white edge (the shared
+fog mixer's "snow" tint) and they are slowed; past 85, slowed more and now and then hurt a little. `/scriptevent wx:chill
+off` switches it off for a world. Rule tested; untested in a game.

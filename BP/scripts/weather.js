@@ -131,10 +131,11 @@ export function startWeather() {
   system.runInterval(tick, 10);
   system.runInterval(() => applyWind(0.2), 4);
   // Testing aids, from chat: /scriptevent wx:set rain 2 wind 3, wx:front storm, wx:auto, wx:climate cold|temperate|hot,
-  // wx:seed 12, wx:status
+  // wx:seed 12, wx:status, wx:quiet on|off (no chat replies)
   system.afterEvents.scriptEventReceive.subscribe(({ id, message, sourceEntity }) => {
     if (!id.startsWith("wx:") || id === "wx:changed") return;
-    const say = (text) => sourceEntity?.sendMessage?.(`[Weather] ${text}`);
+    // Quiet (`/scriptevent wx:quiet on`): no chat lines for a game that drives the weather by script event as the player; the line goes to the log instead.
+    const say = (text) => (world.getDynamicProperty("wx:quiet") === "on" ? log(text) : sourceEntity?.sendMessage?.(`[Weather] ${text}`));
     const words = message.trim().split(/\s+/).filter(Boolean);
     if (id === "wx:set") {
       const asked = {};
@@ -148,6 +149,9 @@ export function startWeather() {
         state.manual = f.levels;
         say(`front ${words[0]}`);
       }
+    } else if (id === "wx:quiet") {
+      world.setDynamicProperty("wx:quiet", words[0] === "off" ? "off" : "on");
+      log(`quiet ${words[0] === "off" ? "off" : "on"}`);
     } else if (id === "wx:auto") {
       state.manual = undefined;
       say("following the forecast");

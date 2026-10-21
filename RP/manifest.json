@@ -4,11 +4,7 @@
     "name": "Weather Events Resources",
     "description": "Fog, particles, sounds and models for Weather Events.",
     "uuid": "3c3d88ce-164a-4b14-af0f-0d452b0897a9",
-    "version": [
-      0,
-      7,
-      4
-    ],
+    "version": [0, 7, 5],
     "min_engine_version": [
       1,
       26,
@@ -19,11 +15,7 @@
     {
       "type": "resources",
       "uuid": "82fa864d-7386-4f30-b596-ae813cce20db",
-      "version": [
-        0,
-        7,
-        4
-      ]
+      "version": [0, 7, 5]
     }
   ]
 }
